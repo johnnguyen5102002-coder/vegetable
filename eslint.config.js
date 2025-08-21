@@ -53,6 +53,7 @@ const eslintConfig = config(
     },
     rules: {
       "no-undef": [0],
+      "no-void": ["error", { allowAsStatement: true }],
       "@typescript-eslint/consistent-type-definitions": [2, "type"],
       "@typescript-eslint/consistent-type-imports": [
         2,

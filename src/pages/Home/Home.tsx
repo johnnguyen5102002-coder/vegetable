@@ -1,7 +1,14 @@
-
-import ProductList from '../../features/products/components/ProductList.jsx'
-
+import ProductList from "../../features/products/components/ProductList.jsx"
+import { LocalMallIcon, AccountCircleIcon } from "../../assets/icons/index"
+import { useSelector } from "react-redux"
+import { Outlet, Link } from "react-router"
+import { relative } from "path"
 const Home = () => {
+  const carts = useSelector(state => state.products.cart)
+  const numberCart = carts
+    .map(cart => cart.quantity)
+    .reduce((pre, curr) => pre + curr, 0)
+
   return (
     <>
       <header className="header">
@@ -11,6 +18,17 @@ const Home = () => {
           <a href="#about">About</a>
           <a href="#products">Products</a>
           <a href="#contact">Contact</a>
+          <div style={{ position: "relative" }}>
+            <Link to="/cart">
+              <LocalMallIcon className="icon" />
+              <span className="nav__cart">{numberCart}</span>
+            </Link>
+          </div>
+          <div>
+            <Link to="/login">
+              <AccountCircleIcon className="icon" />
+            </Link>
+          </div>
         </nav>
       </header>
 
@@ -47,6 +65,7 @@ const Home = () => {
       <footer className="footer">
         <p>© 2025 VeggieMart. All rights reserved.</p>
       </footer>
+      <Outlet />
     </>
   )
 }

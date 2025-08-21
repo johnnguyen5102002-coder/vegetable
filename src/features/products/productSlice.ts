@@ -17,7 +17,6 @@ interface ProductState {
   cart: CartItem[]
 }
 
-
 const initialState = {
   products: [
     {
@@ -79,13 +78,18 @@ const ProductSlice = createSlice({
     removeFromCart: (state, action) => {
       const product = state.products.find(pro => pro.id === action.payload)
       if (product) {
-        const exist = state.cart.find(pro => pro.id === product.id)
-        if (exist && exist.quantity > 1) {
-          exist.quantity -= 1
-        } else {
-          state.cart = state.products.filter(pro => pro.id !== action.payload)
-        }
+        state.cart = state.cart.filter(pro => pro.id !== action.payload)
       }
+    },
+
+    incCart: (state, action) => {
+      const product = state.cart.find(cart => cart.id === action.payload)
+      product.quantity += 1
+    },
+
+    decCart: (state, action) => {
+      const product = state.cart.find(cart => cart.id === action.payload)
+      product.quantity = product.quantity > 1 ? product.quantity - 1 : 1
     },
 
     clearCart: state => {
@@ -94,5 +98,6 @@ const ProductSlice = createSlice({
   },
 })
 
-export const { addToCart, removeFromCart, clearCart } = ProductSlice.actions
+export const { addToCart, removeFromCart, clearCart, incCart, decCart } =
+  ProductSlice.actions
 export default ProductSlice.reducer

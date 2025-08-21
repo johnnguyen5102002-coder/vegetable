@@ -1,1 +1,4 @@
-@import url('./Home/Home.css');
+@import url("./base.css");
+@import url("./Home/Home.css");
+@import url("./Cart/Cart.css");
+@import url("./Auth/Login.css");
