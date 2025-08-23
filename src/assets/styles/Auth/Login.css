@@ -25,6 +25,11 @@
 .form-group {
   margin-bottom: 15px;
   text-align: left;
+  position: relative;
+}
+
+.form-group #password {
+  padding-right: 40px;
 }
 .form-group label {
   display: block;
