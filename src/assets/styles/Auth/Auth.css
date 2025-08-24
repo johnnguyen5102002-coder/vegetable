@@ -31,6 +31,11 @@
   margin-bottom: 15px;
   text-align: left;
   position: relative;
+  overflow: visible;
+}
+
+.form-required {
+  color: red;
 }
 
 .form-group #password {
@@ -53,6 +58,19 @@
 .form-group input:focus {
   border-color: #4caf50;
   outline: none;
+}
+
+.error-tooltip {
+  position: absolute;
+  top: 50%;
+  left: 105%;
+  transform: translateY(-50%);
+  background: #f44336;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
 }
 .auth-btn {
   background: #e68900;
