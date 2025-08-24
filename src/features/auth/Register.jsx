@@ -6,10 +6,12 @@ import { Link } from "react-router"
 import { USER_REGEX, PWD_REGEX } from "../../constants/Regex"
 
 const Login = () => {
-  const [isShowPwd, setIsShowPwd] = useState(true)
-  const [isShowPwdMatch, setIsShowPwdMatch] = useState(true)
+  const [showPwd, setShowPwd] = useState({
+    password: true,
+    passwordMatch: true,
+  })
   const [errors, setErrors] = useState([])
-  const [info, setInfo] = useState([])
+  const [info, setInfo] = useState({})
 
   const styleIcon = {
     position: "absolute",
@@ -19,93 +21,55 @@ const Login = () => {
     fontSize: 20,
   }
 
-  function toggleShowPwd() {
-    setIsShowPwd(!isShowPwd)
+  function handleChange(id, value) {
+    setInfo(prev => ({ ...prev, [id]: value }))
+    validateFeild(id, value, { ...info, [id]: value })
   }
 
-  function toggleShowPwdMatch() {
-    setIsShowPwdMatch(!isShowPwdMatch)
+  function toggleShow(id) {
+    setShowPwd(prev => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  const rules = {
+    username: {
+      test: value => USER_REGEX.test(value),
+      message: lang("error_message.USER_ERROR"),
+    },
+    password: {
+      test: value => PWD_REGEX.test(value),
+      message: lang("error_message.PWD_ERROR"),
+    },
+    passwordMatch: {
+      test: (value, info) => value === info.password,
+      message: lang("error_message.PWD_MATCH_ERROR"),
+    },
+    phonenumber: {
+      test: value => value.trim() !== "",
+      message: lang("error_message.REQUIRED_ERROR"),
+    },
+    name: {
+      test: value => value.trim() !== "",
+      message: lang("error_message.REQUIRED_ERROR"),
+    },
   }
 
   function validateFeild(id, value, info) {
+    const rule = rules[id]
+    if (!rule) return
+
+    const isValid = rule.test(value, info)
     let newError = [...errors]
-    switch (id) {
-      case "username":
-        if (USER_REGEX.test(value)) {
-          newError = newError.filter(error => error.id !== "username")
-        } else {
-          newError = [
-            ...newError,
-            {
-              id: "username",
-              msgError: lang("error_message.USER_ERROR"),
-            },
-          ]
-        }
-        break
-      case "password":
-        if (PWD_REGEX.test(value)) {
-          newError = newError.filter(error => error.id !== "password")
-        } else {
-          newError = [
-            ...newError,
-            {
-              id: "password",
-              msgError: lang("error_message.PWD_ERROR"),
-            },
-          ]
-        }
-        break
-      case "passwordMatch":
-        if (value === info.password) {
-          newError = newError.filter(error => error.id !== "passwordMatch")
-        } else {
-          newError = [
-            ...newError,
-            {
-              id: "passwordMatch",
-              msgError: lang("error_message.PWD_MATCH_ERROR"),
-            },
-          ]
-        }
-        break
 
-      case "phonenumber":
-        if (value !== "") {
-          newError = newError.filter(error => error.id !== "phonenumber")
-        } else {
-          newError = [
-            ...newError,
-            {
-              id: "phonenumber",
-              msgError: lang("error_message.REQUIRED_ERROR"),
-            },
-          ]
-        }
-        break
-
-      case "name":
-        if (value !== "") {
-          newError = newError.filter(error => error.id !== "name")
-        } else {
-          newError = [
-            ...newError,
-            {
-              id: "name",
-              msgError: lang("error_message.REQUIRED_ERROR"),
-            },
-          ]
-        }
-        break
-      default:
-        break
+    if (isValid) {
+      newError = newError.filter(error => error.id !== id)
+    } else {
+      newError = [
+        ...newError.filter(e => e.id !== id),
+        { id, msgError: rule.message },
+      ]
     }
-    setErrors(newError)
-  }
 
-  function handleChange(id, value) {
-    setInfo({ ...info, [id]: value })
-    validateFeild(id, value, info)
+    setErrors(newError)
   }
 
   return (
@@ -162,14 +126,14 @@ const Login = () => {
               label={lang("login.PASSWORD")}
               required
               id="password"
-              type={isShowPwd ? "password" : "text"}
+              type={showPwd.password ? "password" : "text"}
               placeholder={lang("login.PLACE_PASSWORD")}
               handleChange={handleChange}
               style={{ flex: 1 }}
               errors={errors}
             >
-              <div onClick={() => toggleShowPwd()}>
-                {isShowPwd ? (
+              <div onClick={() => toggleShow("password")}>
+                {showPwd.password ? (
                   <VisibilityIcon sx={styleIcon} />
                 ) : (
                   <VisibilityOffIcon sx={styleIcon} />
@@ -181,14 +145,14 @@ const Login = () => {
               label={lang("login.PASSWORD_MATCH")}
               required
               id="passwordMatch"
-              type={isShowPwdMatch ? "password" : "text"}
+              type={showPwd.passwordMatch ? "password" : "text"}
               placeholder={lang("login.PLACE_PASSWORD_MATCH")}
               handleChange={handleChange}
               style={{ flex: 1 }}
               errors={errors}
             >
-              <div onClick={() => toggleShowPwdMatch()}>
-                {isShowPwdMatch ? (
+              <div onClick={() => toggleShow("passwordMatch")}>
+                {showPwd.passwordMatch ? (
                   <VisibilityIcon sx={styleIcon} />
                 ) : (
                   <VisibilityOffIcon sx={styleIcon} />
@@ -198,9 +162,8 @@ const Login = () => {
           </div>
 
           <button
-            type="submit"
+            disabled={Object.values(errors).some(Boolean)}
             className="auth-btn"
-            disabled={errors.length === 0}
           >
             Đăng ký
           </button>
