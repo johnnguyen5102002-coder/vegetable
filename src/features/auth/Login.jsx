@@ -12,6 +12,7 @@ const Login = () => {
     bottom: 8,
     right: 10,
     cursor: "pointer",
+    fontSize: 20,
   }
 
   function toggleHidePwd() {
@@ -19,23 +20,23 @@ const Login = () => {
   }
 
   return (
-    <div className="login">
+    <div className="auth">
       <div className="overlay"></div>
-      <div className="login-container">
+      <div className="auth-container">
         <h2>Đăng nhập</h2>
         <form>
           <Input
-            label={lang("login.userName")}
+            label={lang("login.USERNAME")}
             id="username"
             type="text"
-            placeholder={lang("login.placeUserName")}
+            placeholder={lang("login.PLACE_USERNAME")}
           />
 
           <Input
-            label={lang("login.password")}
+            label={lang("login.PASSWORD")}
             id="password"
             type={isHide ? "password" : "text"}
-            placeholder={lang("login.placePassword")}
+            placeholder={lang("login.PLACE_PASSWORD")}
           >
             <div onClick={() => toggleHidePwd()}>
               {isHide ? (
@@ -46,7 +47,7 @@ const Login = () => {
             </div>
           </Input>
 
-          <button type="submit" className="login-btn">
+          <button type="submit" className="auth-btn">
             Đăng nhập
           </button>
           <div className="extra-links">

@@ -1,10 +1,18 @@
-const Input = ({ label, type, id, placeholder, children, handleChange }) => {
+const Input = ({
+  label,
+  type,
+  id,
+  placeholder,
+  children,
+  handleChange,
+  style,
+}) => {
   return (
-    <div className="form-group">
-      <label htmlFor={id}>{label}</label>
+    <div className="form-group" style={style}>
+      <label>{label}</label>
       <input
         type={type}
-        id={id}
+        itemID={id}
         placeholder={placeholder}
         onChange={handleChange}
       />

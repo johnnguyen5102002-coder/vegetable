@@ -5,63 +5,106 @@ import { useState } from "react"
 import { Link } from "react-router"
 
 const Login = () => {
-  const [isHide, setIsHide] = useState(true)
+  const [isShowPwd, setIsShowPwd] = useState(true)
+  const [isShowPwdMatch, setIsShowPwdMatch] = useState(true)
 
   const styleIcon = {
     position: "absolute",
     bottom: 8,
     right: 10,
     cursor: "pointer",
+    fontSize: 20,
   }
 
-  function toggleHidePwd() {
-    setIsHide(!isHide)
+  function toggleShowPwd() {
+    setIsShowPwd(!isShowPwd)
+  }
+
+  function toggleShowPwdMatch() {
+    setIsShowPwdMatch(!isShowPwdMatch)
   }
 
   return (
-    <div className="login">
+    <div className="auth">
       <div className="overlay"></div>
-      <div className="login-container">
+      <div className="auth-container register-container">
         <h2>Đăng ký</h2>
         <form>
           <Input
-            label={lang("login.userName")}
+            label="Họ và tên"
             id="username"
             type="text"
-            placeholder={lang("login.placeUserName")}
+            placeholder="Nhập họ và tên"
+            style={{ flex: 1 }}
+          />
+
+          <div style={{ display: "flex", columnGap: 10 }}>
+            <Input
+              label={lang("login.PHONE_NUMBER")}
+              id="phonenumber"
+              type="text"
+              placeholder={lang("login.PLACE_PHONE_NUMBER")}
+              style={{ flex: 1 }}
+            />
+            <Input
+              label={lang("login.EMAIL")}
+              id="email"
+              type="text"
+              placeholder={lang("login.PLACE_EMAIL")}
+              style={{ flex: 1 }}
+            />
+          </div>
+
+          <Input
+            label={lang("login.ADDRESS")}
+            id="address"
+            type="text"
+            placeholder={lang("login.PLACE_ADDRESS")}
+            style={{ flex: 1 }}
           />
 
           <Input
-            label={lang("login.password")}
-            id="password"
-            type={isHide ? "password" : "text"}
-            placeholder={lang("login.placePassword")}
-          >
-            <div onClick={() => toggleHidePwd()}>
-              {isHide ? (
-                <VisibilityIcon sx={styleIcon} />
-              ) : (
-                <VisibilityOffIcon sx={styleIcon} />
-              )}
-            </div>
-          </Input>
+            label={lang("login.USERNAME")}
+            id="username"
+            type="text"
+            placeholder={lang("login.PLACE_USERNAME")}
+          />
 
-          <Input
-            label={lang("login.password")}
-            id="password"
-            type={isHide ? "password" : "text"}
-            placeholder={lang("login.placePassword")}
-          >
-            <div onClick={() => toggleHidePwd()}>
-              {isHide ? (
-                <VisibilityIcon sx={styleIcon} />
-              ) : (
-                <VisibilityOffIcon sx={styleIcon} />
-              )}
-            </div>
-          </Input>
+          <div style={{ display: "flex", columnGap: 10 }}>
+            <Input
+              label={lang("login.PASSWORD")}
+              id="password"
+              type={isShowPwd ? "password" : "text"}
+              placeholder={lang("login.PLACE_PASSWORD")}
+              style={{ flex: 1 }}
+            >
+              <div onClick={() => toggleShowPwd()}>
+                {isShowPwd ? (
+                  <VisibilityIcon sx={styleIcon} />
+                ) : (
+                  <VisibilityOffIcon sx={styleIcon} />
+                )}
+              </div>
+            </Input>
 
-          <button type="submit" className="login-btn">
+            <Input
+              label={lang("login.PASSWORD_MATCH")}
+              id="passwordMatch"
+              type={isShowPwdMatch ? "password" : "text"}
+              placeholder={lang("login.PLACE_PASSWORD_MATCH")}
+              style={{ flex: 1 }}
+            >
+              <div onClick={() => toggleShowPwdMatch()}>
+                {isShowPwdMatch ? (
+                  <VisibilityIcon sx={styleIcon} />
+                ) : (
+                  <VisibilityOffIcon sx={styleIcon} />
+                )}
+              </div>
+            </Input>
+          </div>
+
+          <button type="submit" className="auth-btn">
             Đăng ký
           </button>
           <div className="extra-links">
